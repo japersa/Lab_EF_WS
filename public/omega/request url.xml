@@ -1,0 +1,21 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <tem:fncGetURLPDF>
+         <tem:FechaPeticion>13/05/2016</tem:FechaPeticion>
+         <tem:NumeroPeticion>5130033</tem:NumeroPeticion>
+         <tem:Modulo>LAB</tem:Modulo>
+      </tem:fncGetURLPDF>
+   </soapenv:Body>
+</soapenv:Envelope>
+<!--Response-->
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <soap:Body>
+      <fncGetURLPDFResponse xmlns="http://tempuri.org">
+         <fncGetURLPDFResult>
+            <URL_PDF>http://localhost:8003/pdf/qk2mlpjkk3n5n3jkskbiotja166102.pdf</URL_PDF>
+            <strError/>
+         </fncGetURLPDFResult>
+      </fncGetURLPDFResponse>
+   </soap:Body>
+</soap:Envelope>

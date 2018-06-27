@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html ng-app="apiDoc">
+
+<head>
+    <title>Documentación de la API</title>
+
+    <style type="text/css" rel="stylesheet">
+        @media only screen {
+            body {
+                padding: 0 36px;
+                background: #F5F5F5;
+            }
+            body>header>h1>small {
+                display: block;
+            }
+            body>header>h1>small>select {
+                border: transparent;
+            }
+            
+            
+            .methods-list h4{
+                margin-top:20px;
+            }
+            .methods-list .methods-list-item{
+                background: white;
+                margin: 24px 0;
+                display: block;
+                -moz-box-shadow: #C6C6C6 0 0 12px;
+                -webkit-box-shadow:#C6C6C6  0 0 12px;
+                box-shadow: #C6C6C6 0 0 12px;
+                padding: 0 12px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+</head>
+
+<body ng-controller="apisController">
+    <header>
+        <h1>Documentación de la API
+            <small>
+                <select ng-options="a as a.name for a in apis" ng-model="currentApi"></select>
+            </small>
+        </h1>
+    </header>
+
+    <section>
+        <p ng-bind="currentApi.description"></p>
+        <ul class="list-unstyled methods-list">
+            <li class="methods-list-item" ng-repeat="m in currentApi.methods">
+                <article>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h3>
+                                <span ng-bind="m.action"></span>
+                                <span ng-bind="'/'+currentApi.name + m.name"></span>
+                            </h3>
+                            <p ng-bind="m.description"></p>
+                            <div ng-hide="m.request.urlParams.length==0">
+                                <h4>Parametros de URL</h4> Ejemplo
+                                <pre ng-bind="getUrlExample(m.request.urlParams)"></pre>
+                                <table class="table table-justified">
+                                    <caption>Referencia</caption>
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Descripcion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="up in m.request.urlParams">
+                                            <td ng-bind="up.name"></td>
+                                            <td ng-bind="up.description"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div ng-hide="!m.request.bodyExample">
+                                <h4>Cuerpo</h4>
+                                <pre ng-bind="m.request.bodyExample | json:4"></pre>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h4>Respuesta</h4>
+
+                            <table class="table table-justified">
+                                <thead>
+                                    <tr>
+                                        <th>Estado/Motivo</th>
+                                        <th>Cuerpo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="r in m.response" ng-class="{ 'success' : r.status<400, 'warning' : r.status>=400 &&  r.status<500, 'danger' : r.status>=500 }">
+                                        <td>
+                                            <span ng-bind="r.status"></span>
+                                            <ul>
+                                                <li ng-repeat="d in r.description" ng-bind="d"></li>
+                                            </ul>
+                                        </td>
+                                        <td><pre ng-bind="r.bodyExample | json:4"></pre></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+            </li>
+        </ul>
+    </section>
+
+    <footer></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+    <script>
+        angular
+        .module('apiDoc',[])
+        .controller('apisController', function($scope){
+            $scope.getUrlExample=function(params){
+                r  ="";
+                for(var i=0; i<params.length; i++)
+                {
+                    var p = params[i];
+                    
+                    r += (r.length==0 ? '?' : '&') + p.name + '='+ p.example;
+                }
+                return r;
+            };
+            $scope.apis = [
+                {
+                    name: 'account',
+                    description: '',
+                    methods: [
+                        {
+                            action: 'POST',
+                            name: '/PasswordPin',
+                            description: 'Envia un eMail con un PIN para poder reestablecer la contraseña. Solo se especifica el atributo eMail o el objeto id.',
+                            request: {
+                                urlParams: [],
+                                bodyExample: {
+                                    eMail: 'sergiogirado@nativapps.com',
+                                    id: {
+                                        type: 'CC',
+                                        number: 1047461654
+                                    }
+                                }
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['Se envió correctamente un mail al paciente.'],
+                                    bodyExample: {}
+
+                                },
+                                {
+                                    status: '400',
+                                    description: ['No especificó un eMail', 'El eMail no pertenece a ningun paciente'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                },
+                                {
+                                    status: '404',
+                                    description: ['No se encontró ningún paciente con con el mail ni la identificacion proporcionanda'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                },
+                                {
+                                    status: '500',
+                                    description: ['No se pudo leer el archivo de plantilla de correo', 'No se pudo enviar el email'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                }
+                            ]
+                        },
+                        {
+                            action: 'POST',
+                            name: '/ResetPasswordRandom',
+                            description: 'Envia un eMail con una nueva contraseña aleatoria. Solo se especifica el atributo eMail o el objeto id.',
+                            request: {
+                                urlParams: [],
+                                bodyExample: {
+                                    eMail: 'sergiogirado@nativapps.com',
+                                    id: {
+                                        type: 'CC',
+                                        number: 1047461654
+                                    }
+                                }
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['Se envió correctamente un mail al paciente.'],
+                                    bodyExample: {}
+
+                                },
+                                {
+                                    status: '400',
+                                    description: ['No especificó un eMail', 'El eMail no pertenece a ningun paciente'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                },
+                                {
+                                    status: '404',
+                                    description: ['No se encontró ningún paciente con con el mail ni la identificacion proporcionanda'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                },
+                                {
+                                    status: '500',
+                                    description: ['No se pudo leer el archivo de plantilla de correo', 'No se pudo enviar el email'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                }
+                            ]
+                        },
+                        {
+                            action: 'POST',
+                            name: '/ResetPassword',
+                            description: 'Establece una nueva contraseña al usuario especificado y automaticamente obtiene un token de sesion',
+                            request: {
+                                urlParams: [],
+                                bodyExample: {
+                                    eMail: '',
+                                    password: '',
+                                    PIN: '',
+                                }
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['La contraseña se estableció correctamente.'],
+                                    bodyExample: {
+                                        token: 'e8g4j8d74bvg5mk8po5f748s',
+                                        user: { username: 'sergiogirado@nativapps.com', id: 's8g52s47d8h4g8f4' }
+                                    }
+                                },
+                                {
+                                    status: '400',
+                                    description: ['No especificó alguno de los campos', 'El eMail no pertenece a ningun paciente.'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                }
+                            ]
+                        },
+                        {
+                            action: 'POST',
+                            name: '/login',
+                            description: 'Obtiene un token de sesion.',
+                            request: {
+                                urlParams: [],
+                                bodyExample: {
+                                    username: '',
+                                    password: '',
+                                }
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['Sesión iniciada exitosamente.'],
+                                    bodyExample: {
+                                        token: 'e8g4j8d74bvg5mk8po5f748s',
+                                        user: { username: 'sergiogirado@nativapps.com', id: 's8g52s47d8h4g8f4' }
+                                    }
+                                },
+                                {
+                                    status: '400',
+                                    description: ['No especificó alguno de los campos.'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                },
+                                {
+                                    status: '401',
+                                    description: ['Los datos son incorrectos.'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                }
+                            ]
+                        },
+                        {
+                            action: 'POST',
+                            name: '/ChangePassword',
+                            description: 'Cambia la contraseña del usuario.',
+                            request: {
+                                urlParams: [],
+                                bodyExample: {
+                                    currentPassword: 'contraseña_actual',
+                                    newPassword: 'contraseña_nueva',
+                                }
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['Contraseña actualizada exitosamente.'],
+                                    bodyExample: {
+                                        token: 'e8g4j8d74bvg5mk8po5f748s',
+                                        user: { username: 'sergiogirado@nativapps.com', id: 's8g52s47d8h4g8f4' }
+                                    }
+                                },
+                                {
+                                    status: '400',
+                                    description: ['No especificó alguno de los campos.'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                },
+                                {
+                                    status: '401',
+                                    description: ['No especificó un token de sesión.'],
+                                    bodyExample: { message: 'Mensaje de error' }
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'patients',
+                    methods: [
+                        {
+                            action: 'GET',
+                            name: '',
+                            description: 'Obtiene los pacientes asignados a este usuario',
+                            request: {
+                                urlParams: [],
+                                bodyExample: ''
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['Se obtienen exitosamente los pacientes.'],
+                                    bodyExample: [
+                                        {
+                                            "_id": "56ddc5d255c214d43be139a4",
+                                            "user": "56ddc5d355c214d43be139a5",
+                                            "identificationType": "CC",
+                                            "identificationNumber": "1047461706",
+                                            "firstName": "Sergio Andrés",
+                                            "lastName": "Girado Arnedo",
+                                            "eMail": "sergiogirado@hotmail.com",
+                                            "phoneNumber": 3002426688,
+                                            "birthDate": "1993-10-15T05:00:00.000Z",
+                                            "__v": 0
+                                        }
+                                    ]
+                                },
+                                {
+                                    status: '401',
+                                    description: ['No especificó un token', 'El token es invalido o expiró'],
+                                    bodyExample: ''
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    name: 'results',
+                    methods: [
+                        {
+                            action: 'GET',
+                            name: '',
+                            description: 'Obtiene las solicitudes del paciente especificado dentro del rango de fechas especificado. La fecha Unix se obtiene del objeto Date (Javascript estandar), metodo getTime() y se reconstruye con el constructor del objeto Date',
+                            request: {
+                                urlParams: [
+                                    {
+                                        name:'identificationType',
+                                        description:'Tipo de identificación',
+                                        example:'CC'
+                                    },
+                                    {
+                                        name:'identificationNumber',
+                                        description:'Numero de identificación',
+                                        example:'1047461706'
+                                    },
+                                    {
+                                        name:'from',
+                                        description:'Fecha de inicio (Unix).',
+                                        example:'1456808400000'
+                                    },
+                                    {
+                                        name:'to',
+                                        description:'Fecha de fin (Unix).',
+                                        example:'1459400400000'
+                                    }
+                                ],
+                                bodyExample: ''
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['Se obtienen exitosamente las solicitudes.'],
+                                    bodyExample: [
+                                        {
+                                            number: "32sd1as3d1",
+                                            date: "2016-03-6T05:00:00.000Z",
+                                            state: "Estado",
+                                            module: "Modulo",
+                                            description: "Descripción"
+                                        }
+                                    ]
+                                },
+                                {
+                                    status: '401',
+                                    description: ['No especificó un token', 'El token es invalido o expiró'],
+                                    bodyExample: ''
+                                }
+                            ]
+                        },
+                        {
+                            action: 'GET',
+                            name: '/pdf',
+                            description: 'Obtiene el PDF a partir de la solicitud especificada. (se pasa un objeto obtenido de GET /results)',
+                            request: {
+                                urlParams: [
+                                    {
+                                        name:'number',
+                                        description:'Numero de solicitud',
+                                        example:'32sd1as3d1'
+                                    },
+                                    {
+                                        name:'date',
+                                        description:'Fecha de solicitud',
+                                        example:'1456808400000'
+                                    },
+                                    {
+                                        name:'module',
+                                        description:'Modulo de solicitud',
+                                        example:'Modulo'
+                                    }
+                                ],
+                                bodyExample:''
+                            },
+                            response: [
+                                {
+                                    status: '200',
+                                    description: ['Se obtiene exitosamente el stream con el PDF (Se inicia un dialogo de descarga)'],
+                                    bodyExample: ''
+                                },
+                                {
+                                    status: '401',
+                                    description: ['No especificó un token', 'El token es invalido o expiró'],
+                                    bodyExample: ''
+                                },
+                                {
+                                    status: '500',
+                                    description: ['No se pudo generar el PDF', 'No se pudo descargar el PDF'],
+                                    bodyExample: ''
+                                },
+                            ]
+                        }
+                    ]
+                }
+
+            ];
+        $scope.currentApi = $scope.apis[0];
+        });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</body>
+
+</html>

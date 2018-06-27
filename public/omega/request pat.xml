@@ -1,0 +1,87 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org">
+   <soapenv:Body>
+      <tem:fncGetSolicitudesByPacienteByFechas>
+         <tem:TipoIdentificacion>1</tem:TipoIdentificacion>
+         <tem:Identificacion>45461608</tem:Identificacion>
+         <tem:FechaInicial>01/01/2016</tem:FechaInicial>
+         <tem:FechaFinal>01/06/2016</tem:FechaFinal>
+      </tem:fncGetSolicitudesByPacienteByFechas>
+   </soapenv:Body>
+</soapenv:Envelope>
+
+<!--Response-->
+
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <soap:Body>
+      <fncGetSolicitudesByPacienteByFechasResponse xmlns="http://tempuri.org">
+         <fncGetSolicitudesByPacienteByFechasResult>
+            <Consulta>
+               <EstadoFinal>1</EstadoFinal>
+               <Paciente>
+                  <TipoIdentificacion>1</TipoIdentificacion>
+                  <NumeroIdentificacion>45461608</NumeroIdentificacion>
+                  <NombrePaciente>JUAN BENAVIDES VICTORIA</NombrePaciente>
+                  <Peticiones>
+                     <Peticion>
+                        <NumeroPeticion>1210005</NumeroPeticion>
+                        <FechaPeticion>21/01/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>AU,BUN,CA: 125,CALCIO,COL,CREA,ESTRADIOL,FSH,GLI,GOT,GPT,HDL,ID,LDL,LH,TRI,TSH,VIT.D,25,HEMOGR,PT..,PTT</Descripcion>
+                     </Peticion>
+                     <Peticion>
+                        <NumeroPeticion>1260032</NumeroPeticion>
+                        <FechaPeticion>26/01/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>ID,PT..,PTT</Descripcion>
+                     </Peticion>
+                     <Peticion>
+                        <NumeroPeticion>3020050</NumeroPeticion>
+                        <FechaPeticion>02/03/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>ID,PT..,PTT</Descripcion>
+                     </Peticion>
+                     <Peticion>
+                        <NumeroPeticion>3050030</NumeroPeticion>
+                        <FechaPeticion>05/03/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>ID,PT..,PTT</Descripcion>
+                     </Peticion>
+                     <Peticion>
+                        <NumeroPeticion>3310013</NumeroPeticion>
+                        <FechaPeticion>31/03/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>AU,BUN,COL,CREA,GLI,HDL,ID,LDL,PCR-us,TRI,VSG,HEMOGR</Descripcion>
+                     </Peticion>
+                     <Peticion>
+                        <NumeroPeticion>4040046</NumeroPeticion>
+                        <FechaPeticion>04/04/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>ID,HEMOGR</Descripcion>
+                     </Peticion>
+                     <Peticion>
+                        <NumeroPeticion>4060012</NumeroPeticion>
+                        <FechaPeticion>06/04/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>ALBUM,ANA,Ac.FOLICO,C3,C4,CALCIO,CLORO,COR-AM,COR-PM,FALC,GGT,GLOBULINA,GOT,GPT,ID,MAGNESIO,POTASIO,PROTEINAS,RA TEST,SODIO,T4L,TSH,ANCA,HEMOGR</Descripcion>
+                     </Peticion>
+                     <Peticion>
+                        <NumeroPeticion>5130033</NumeroPeticion>
+                        <FechaPeticion>13/05/2016</FechaPeticion>
+                        <EstadoPeticion>T</EstadoPeticion>
+                        <Modulo>LAB</Modulo>
+                        <Descripcion>ID,HEMOGR</Descripcion>
+                     </Peticion>
+                  </Peticiones>
+               </Paciente>
+            </Consulta>
+         </fncGetSolicitudesByPacienteByFechasResult>
+      </fncGetSolicitudesByPacienteByFechasResponse>
+   </soap:Body>
+</soap:Envelope>

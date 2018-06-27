@@ -1,0 +1,29 @@
+/*
+POST http://152.204.131.66:8004/patients
+Content-Type: application/json
+*/
+{
+  "identificationType": "CC",
+  "identificationNumber": "45439711",
+  "firstName": "SONIA",
+  "lastName": "FERNANDEZ DAZA",
+  "eMail": "sonfer11@hotmail.com",
+  "phoneNumber": "6642160",
+  "birthDate": "1962-07-21T00:00:00-05:00",
+  "fileData": [
+    "45439711",
+    "FERNANDEZ DAZA",
+    "SONIA",
+    "2",
+    "21/07/1962",
+    "6642160",
+    "CC",
+    "PARTI",
+    "4",
+    "0",
+    "G-005",
+    "C0010785",
+    "sonfer11@hotmail.com",
+    "\r"
+  ]
+}/*Sus resultados aun*/
