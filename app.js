@@ -36,6 +36,20 @@ app.use(allowCrossDomain);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize());
 app.set("view engine", "html");
+app.use(function(req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, X-Response-Time, X-PINGOTHER, X-CSRF-Token,Authorization"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.setHeader(
+    "Access-Control-Expose-Headers",
+    "X-Api-Version, X-Request-Id, X-Response-Time"
+  );
+  res.setHeader("Access-Control-Max-Age", "1000");
+  next();
+});
 app.use("/account", account);
 app.use("/patients", patients);
 app.use("/results", results);
