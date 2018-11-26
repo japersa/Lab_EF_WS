@@ -9,7 +9,7 @@ var auth = jwt({ secret: config.secret, userProperty: config.userProperty });
 
 var soap = require("soap");
 
-var host = "http://192.168.0.169";
+var host = "http://152.204.131.66";
 var dir = ":8002/";
 
 // var url = '/omega/webservice.wsdl';
