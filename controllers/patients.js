@@ -20,6 +20,7 @@ exports.getAll = function(req, res) {
 exports.patientId = function(req, res) {
   res.json(req.pat);
 };
+
 exports.patient = function(req, res, next, id) {
   var query = Patient.findById(id);
 
@@ -38,6 +39,14 @@ exports.patient = function(req, res, next, id) {
 
 exports.post = function(req, res) {
   var patData = new Patient(req.body);
+  if (
+    patData.client_secret !==
+    "62510278f6aec2465c5e4752dd264adac2b9c213230fb5ef141440b504c07287"
+  ) {
+    return res.status(400).json({
+      message: "You dont have access to this platform"
+    });
+  }
   if (!patData.eMail || !patData.eMail.includes("@")) {
     return res.status(400).json({
       message:

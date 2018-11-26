@@ -11,7 +11,8 @@ var mongoose = require("mongoose");
 require("./models/Patients");
 require("./models/Users");
 require("./config/passport");
-mongoose.connect(config.database,{useMongoClient: true});
+mongoose.connect(config.database);
+//mongoose.connect(config.database,{useMongoClient: true});
 
 var account = require("./routes/account");
 var users = require("./routes/users");
@@ -21,7 +22,10 @@ var results = require("./routes/results");
 var allowCrossDomain = function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
 
   next();
 };
@@ -59,5 +63,5 @@ process.on("uncaughtException", function(err) {
   console.log("Caught exception: " + err);
 });
 
-app.listen(8004);
+//app.listen(8004);
 module.exports = app;
