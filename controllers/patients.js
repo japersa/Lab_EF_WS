@@ -39,8 +39,9 @@ exports.patient = function(req, res, next, id) {
 
 exports.post = function(req, res) {
   var patData = new Patient(req.body);
+
   if (
-    patData.client_secret !==
+    req.body.client_secret !==
     "62510278f6aec2465c5e4752dd264adac2b9c213230fb5ef141440b504c07287"
   ) {
     return res.status(400).json({
@@ -83,15 +84,13 @@ exports.post = function(req, res) {
 
           if (!currentUser) {
             //No existe ni paciente ni usuario
-            console.log("=================");
-            console.log(patData);
             service.saveUser(patData, function(err, createdUser) {
-              console.log("=========");
-              console.log(createdUser);
+              res.code = "NEW_USER_&_PATIENT";
               service.savePat(patData, createdUser._id, res);
             });
           } else {
             //Existe usuario pero no paciente
+            res.code = "NEW_PATIENT";
             service.savePat(patData, currentUser._id, res);
           }
         });
@@ -124,6 +123,7 @@ exports.post = function(req, res) {
         ) {
           // no hay ningun cambio por hacer, solo actualziar datos personales.
           patData.eMail = patData.eMail.toLowerCase();
+          res.code = "UPDATE_USER";
           service.savePat(existingPat, existingPat.user, res);
         }
         //Vericicacion 2 (Paciente con el mismo Id y nuevo correo)
@@ -133,6 +133,7 @@ exports.post = function(req, res) {
             patData.identificationType == existingPat.identificationType)
         ) {
           //se transfiere a otro usuario
+
           existingPat.eMail = patData.eMail.toLowerCase();
 
           //Buscar si existe tal usuario

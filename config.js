@@ -1,4 +1,3 @@
-/*
 module.exports = {
   root: __dirname,
   secret: "labeduardofernandez&nativapps",
@@ -14,7 +13,7 @@ module.exports = {
     }
   }
 };
-*/
+/*
 module.exports = {
   root: __dirname,
   secret: "labedufer&Ws/2019.$-",
@@ -32,3 +31,4 @@ module.exports = {
     }
   }
 };
+*/

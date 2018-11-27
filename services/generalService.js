@@ -6,12 +6,21 @@ var nodemailer = require("nodemailer");
 
 exports.savePat = function(_pat, _uid, _res) {
   console.log("====> 2");
+  console.log(_res.code);
+  console.log(_res.code);
   _pat.user = _uid;
   _pat.save(function(err, savedPat) {
     if (err) {
       return next(err);
     }
-    _res.json(savedPat);
+    console.log(savedPat);
+
+    var response = {
+      data: savedPat,
+      code: _res.code
+    };
+
+    _res.json(response);
   });
 };
 
