@@ -11,8 +11,8 @@ var mongoose = require("mongoose");
 require("./models/Patients");
 require("./models/Users");
 require("./config/passport");
-mongoose.connect(config.database);
-//mongoose.connect(config.database,{useMongoClient: true});
+//mongoose.connect(config.database);
+mongoose.connect(config.database,{useMongoClient: true});
 
 var account = require("./routes/account");
 var users = require("./routes/users");
