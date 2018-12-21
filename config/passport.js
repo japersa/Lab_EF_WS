@@ -5,7 +5,7 @@ var User = mongoose.model("User");
 
 passport.use(
   new LocalStrategy(function(username, password, done) {
-    console.log("entro a passport...");
+    console.log("entro a passport...", username, password);
     User.findOne({ username: username.toLowerCase() }, function(err, user) {
       if (err) {
         return done(err);

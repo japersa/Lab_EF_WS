@@ -10,6 +10,7 @@
     "express": "^4.16.4",
     "express-jwt": "^3.3.0",
     "jsonwebtoken": "^5.7.0",
+    "moment": "^2.23.0",
     "mongoose": "^4.4.4",
     "morgan": "^1.6.1",
     "nodemailer": "^2.3.0",

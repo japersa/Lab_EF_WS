@@ -12,8 +12,9 @@ var soap = require("soap");
 var host = "http://152.204.131.66";
 var dir = ":8002/";
 
+//152.204.131.66:8002/WebServiceConsultaAvicena.asmx?WSDL
 // var url = '/omega/webservice.wsdl';
-var url = host + dir + "WebServiceConsultaAvicena.asmx?WSDL";
+http: var url = host + dir + "WebServiceConsultaAvicena.asmx?WSDL";
 
 var getOmegaDate = function(unix) {
   var dt = new Date(Number(unix));
@@ -42,10 +43,13 @@ var getOmegaIdType = function(labcliType) {
 };
 
 router.get("/", auth, function(req, res, next) {
-  console.log("========== ENTRANDO AL SOAP... ============");
-  console.log(url);
+  fromDate = new Date();
+  const firstDate = fromDate.setDate(fromDate.getDate() - 200);
+  console.log(firstDate);
+
   soap.createClient(url, function(err, client) {
     console.log("CONECTADO AL SOAP");
+    console.log(req.query.to);
     if (err) {
       console.log("=====Ha ocurrido al conectarse al SOAP =====");
       return res
@@ -56,10 +60,10 @@ router.get("/", auth, function(req, res, next) {
     var args = {
       TipoIdentificacion: getOmegaIdType(req.query.identificationType),
       Identificacion: req.query.identificationNumber,
-      FechaInicial: getOmegaDate(req.query.from),
+      FechaInicial: getOmegaDate(firstDate),
       FechaFinal: getOmegaDate(req.query.to)
     };
-
+    console.log(args);
     client.fncGetSolicitudesByPacienteByFechas(args, function(err, result) {
       if (err) {
         console.log("==== Ha ocurrido un error inesperado ======");
