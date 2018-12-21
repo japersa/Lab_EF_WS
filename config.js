@@ -1,4 +1,4 @@
-module.exports = {
+/*module.exports = {
   root: __dirname,
   secret: "labeduardofernandez&nativapps",
   database: "mongodb://localhost:27017/EduFerTest",
@@ -13,7 +13,9 @@ module.exports = {
     }
   }
 };
-/*
+*/
+
+
 module.exports = {
   root: __dirname,
   secret: "labedufer&Ws/2019.$-",
@@ -31,4 +33,4 @@ module.exports = {
     }
   }
 };
-*/
+
